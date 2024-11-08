@@ -1,5 +1,58 @@
-p
+body
 {
-    font-size: large;
+    background-color: black;
+}
+#titolo
+{
+    color:rgb(190, 190, 190);
+    text-align: center;
+}
+#Titolo2
+{
     color:aqua;
+    text-align: center;
+}
+.contenitore {
+    display: flex; 
+    width: 80%;
+    margin: 0%;
+}
+#Autore {
+    width: 25%;
+    margin-right: 21%; /* Spinge #Autore a sinistra */
+    border: 2px solid black;
+    border-radius: 20px;
+    background-color: rgb(87, 87, 87);
+    font-family: sans-serif;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+#Tutto {
+    align-items: center;
+    margin-right: 0%;
+    width: 25%;
+    border: 2px solid black;
+    border-radius: 20px;
+    background-color: rgb(87, 87, 87);
+    font-family: sans-serif;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+hr
+{
+    color:aliceblue;
+}
+#ski
+{
+    text-align: center;
+    color:aliceblue;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+#lista
+{
+    text-align: center;
+    color:aliceblue;
+    font-family: Arial, Helvetica, sans-serif;
 }
