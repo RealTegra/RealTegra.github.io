@@ -1,0 +1,56 @@
+/* ------------------------------ MAIN ------------------------------ */
+
+#div-titolo
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.a-p {
+    text-decoration: none;
+    color: rgb(129 140 248);
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+}
+
+#titolo
+{
+    font-size: 60px;
+}
+
+#div-downloads
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    backdrop-filter: blur(5px);
+    background-color: rgba(68, 68, 68, 0.534);
+    border-radius: 15px;
+}
+
+.div-d
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    background-color: rgba(27, 27, 27, 0.582);
+    border-radius: 15px;
+    margin: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.btn-scarica
+{
+    padding: 20px 100px 20px 100px;
+    border-radius: 20px;
+    background-color: rgb(15, 184, 0);
+    color: white;
+    font-weight: bolder;
+    font-size: 20px;
+    margin: 20px;
+    border: 0;
+}

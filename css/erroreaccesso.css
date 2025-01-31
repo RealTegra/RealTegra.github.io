@@ -1,0 +1,19 @@
+body
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;   
+}
+.btn-tornaindietro
+{
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 0;
+    background-color: rgb(129 140 248);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}

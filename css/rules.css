@@ -1,0 +1,309 @@
+/* ------------------------------ NAVIGATION BAR ------------------------------ */
+
+@keyframes nav-bar {
+    0% {
+        color: wheat;
+        transform: scale(1.1);
+    }
+    100% {
+        color: white;
+        transform: scale(1.1);
+    }
+}
+
+.btn-nav:hover {
+    animation: nav-bar;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+}
+
+/* ------------------------------ ACCEDI ------------------------------ */
+
+@keyframes accedi-in {
+    0% {
+        color: black;
+        background-color: aquamarine;
+        transform: scale(1);
+    }
+    50% {
+        color: aquamarine;
+        background-color: black;
+        transform: scale(1.1);
+    }
+    100% {
+        color: aquamarine;
+        background-color: black;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes accedi-out {
+    0% {
+        color: aquamarine;
+        background-color: black;
+        transform: scale(1.1);
+    }
+    50% {
+        color: black;
+        background-color: aquamarine;
+        transform: scale(1);
+    }
+    100% {
+        color: black;
+        background-color: aquamarine;
+        transform: scale(1);
+    }
+}
+
+#btn-accedi:hover {
+    animation-name: accedi-in;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+#btn-accedi:not(:hover) {
+    animation-name: accedi-out;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+/* ------------------------------ DOWNLOAD ------------------------------ */
+
+@keyframes scarica-in {
+    0% {
+        color: black;
+        background-color: rgb(0, 83, 14);
+        transform: scale(1);
+    }
+    50% {
+        color: rgb(0, 0, 0);
+        background-color: rgb(0, 255, 42);
+        transform: scale(1.1);
+    }
+    100% {
+        color: rgb(0, 0, 0);
+        background-color: rgb(0, 255, 42);
+        transform: scale(1.1);
+    }
+}
+
+@keyframes scarica-out {
+    0% {
+        color: rgb(0, 0, 0);
+        background-color: rgb(0, 202, 34);
+        transform: scale(1.1);
+    }
+    50% {
+        color: black;
+        background-color: rgb(0, 83, 14);
+        transform: scale(1);
+    }
+    100% {
+        color: black;
+        background-color: rgb(0, 83, 14);
+        transform: scale(1);
+    }
+}
+
+.btn-scarica:hover {
+    animation-name: scarica-in;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.btn-scarica:not(:hover) {
+    animation-name: scarica-out;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+/* ------------------------------ FORM ------------------------------ */
+
+@keyframes form-in {
+    0% {
+        border: 1px solid black;
+    }
+
+    50% {
+        box-shadow: 0 0 50px 10px purple;
+        border: 1px solid purple;
+    }
+
+    100% {
+        box-shadow: 0 0 50px 10px purple;
+        border: 1px solid purple;
+    }
+}
+
+@keyframes form-out {
+    0% {
+        box-shadow: 0 0 50px 10px purple;
+        border: 1px solid purple;
+    }
+
+    50% {
+        box-shadow: 0 0 50px 10px purple;
+        border: 1px solid purple;
+    }
+
+    100% {
+        border: 1px solid black;
+    }
+}
+
+@keyframes form-in-button {
+    0% {
+        border: 1px solid black;
+    }
+
+    50% {
+        box-shadow: 0 0 50px 10px rgb(50 50 200);
+        border: 1px solid rgb(50 50 200);
+    }
+
+    100% {
+        box-shadow: 0 0 50px 10px rgb(50 50 200);
+        border: 1px solid rgb(50 50 200);
+    }
+}
+
+@keyframes form-out-button {
+    0% {
+        box-shadow: 0 0 50px 10px rgb(50 50 200);
+        border: 1px solid rgb(50 50 200);
+    }
+
+    50% {
+        box-shadow: 0 0 50px 10px rgb(50 50 200);
+        border: 1px solid rgb(50 50 200);
+    }
+
+    100% {
+        border: 1px solid black;
+    }
+}
+
+@keyframes form-in-label{
+    0% {
+        border: 1px solid black;
+    }
+
+    50% {
+        border: 1px solid grey;
+    }
+
+    100% {
+        border: 1px solid grey;
+    }
+}
+
+@keyframes form-out-label{
+    0% {
+        border: 1px solid grey;
+    }
+
+    50% {
+        border: 1px solid grey;
+    }
+
+    100% {
+        border: 1px solid black;
+    }
+}
+
+@keyframes btn-scarica-in{
+    0% {
+
+    }
+    50%
+    {
+        scale: 1.1;
+        box-shadow: 0 0 50px 10px rgb(133, 241, 255);
+    }
+    100%
+    {
+        scale: 1.1;
+        box-shadow: 0 0 50px 10px rgb(133, 241, 255);
+        color: white;
+    }
+}
+@keyframes btn-scarica-out
+{
+    0%
+    {
+        scale: 1.1;
+        box-shadow: 0 0 50px 10px rgb(133, 241, 255);
+        color: white;
+    }
+    50%
+    {
+        scale: 1.1;
+        box-shadow: 0 0 50px 10px rgb(133, 241, 255);
+    }
+    100%
+    {
+
+    }
+}
+
+#btn-scarica:hover
+{
+    animation-name: btn-scarica-in;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+#btn-scarica:not(:hover)
+{
+    animation-name: btn-scarica-out;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+#div-form:hover {
+    animation-name: form-in;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+#div-form:not(:hover) {
+    animation-name: form-out;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+#btn-login-submit:hover {
+    animation-name: form-in-button;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+#btn-login-submit:not(:hover)
+{
+    animation-name: form-out-button;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.btn-inputs:hover {
+    animation-name: form-in-label;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.btn-inputs:not(:hover) {
+    animation-name: form-out-label;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+}
