@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Solare 3D</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #info-box {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10; /* Assicura che sia sopra il canvas */
+        }
+        #control-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10; /* Assicura che sia sopra il canvas */
+        }
+        #speed-slider {
+            -webkit-appearance: none;
+            width: 200px;
+            height: 8px;
+            background: #555;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            border-radius: 4px;
+        }
+        #speed-slider:hover {
+            opacity: 1;
+        }
+        #speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4CAF50;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #speed-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #4CAF50;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #planet-fact-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(25, 25, 25, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            text-align: center;
+            z-index: 20;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        #close-fact-box {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        #close-fact-box:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div id="info-box" class="rounded-lg shadow-lg">
+    <h2 class="text-lg font-bold mb-2">Sistema Solare 3D (Vibe Coded)</h2>
+    <p>Usa il mouse per muovere la telecamera:</p>
+    <ul class="list-disc list-inside ml-4">
+        <li>Trascina per ruotare</li>
+        <li>Scroll per zoomare</li>
+        <li>Click destro + trascina per spostare</li>
+    </ul>
+    <p>Per telefono: </p>
+    <ul class="list-disc list-inside ml-4">
+        <li> Non lo so, chiedo a gemini</li>
+    </ul>
+
+    <a href="index.html" style="border: 2px solid white; border-right: 20px;"> Torna alla Home </a>
+</div>
+
+<div id="control-panel" class="rounded-lg shadow-lg">
+    <label for="speed-slider" class="text-white mb-2 text-base font-semibold">Velocità Simulazione:</label>
+    <input type="range" id="speed-slider" min="0.1" max="2.0" step="0.05" value="1.0" class="w-64 accent-green-500">
+    <span id="current-speed" class="text-white mt-2 text-sm">1.0x</span>
+</div>
+
+
+
+<div id="planet-fact-box" class="hidden">
+    <h3 id="fact-title" class="text-xl font-bold mb-3"></h3>
+    <p id="fact-content" class="text-base mb-4"></p>
+    <button id="close-fact-box">Chiudi</button>
+</div>
+
+<script>
+    // Variabili globali per la scena, la telecamera, il renderer e i controlli
+    let scene, camera, renderer, controls;
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+
+    // Array per tenere traccia dei pianeti e delle loro proprietà orbitali
+    const planets = [];
+
+    // Moltiplicatore globale della velocità di simulazione
+    let simulationSpeed = 1.0;
+
+    // Elementi della UI per la casella dei fatti
+    let planetFactBox, factTitle, factContent, closeFactBox;
+
+    // Inizializza la scena 3D
+    function init() {
+        // Crea una nuova scena
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000); // Sfondo nero
+
+        // Crea una telecamera prospettica (FOV, Aspect Ratio, Near, Far)
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.set(0, 50, 100); // Posiziona la telecamera
+
+        // Crea il renderer WebGL
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight); // Imposta la dimensione del renderer alla dimensione della finestra
+        document.body.appendChild(renderer.domElement); // Aggiunge il canvas al corpo del documento
+
+        // Aggiungi i controlli orbitali per permettere all'utente di muovere la telecamera
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Rende il movimento più fluido
+        controls.dampingFactor = 0.05; // Fattore di smorzamento
+        controls.screenSpacePanning = false; // Disabilita lo panning in spazio schermo
+        controls.maxDistance = 500; // Distanza massima di zoom
+        controls.minDistance = 10; // Distanza minima di zoom
+
+        // Aggiungi luce ambientale alla scena per un'illuminazione uniforme
+        const ambientLight = new THREE.AmbientLight(0x333333);
+        scene.add(ambientLight);
+
+        // Crea il Sole
+        const sunGeometry = new THREE.SphereGeometry(10, 32, 32); // Geometria sferica per il Sole
+        const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 }); // Materiale base giallo (non influenzato dalla luce)
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        scene.add(sun);
+
+        // Aggiungi una luce puntiforme dal Sole per illuminare i pianeti
+        const sunLight = new THREE.PointLight(0xffffff, 2, 1000); // Luce bianca forte
+        sun.add(sunLight); // Aggiungi la luce come figlio del Sole per farla emanare da lì
+
+        // Funzione per creare un pianeta
+        function createPlanet(planetName, radius, color, distance, orbitalSpeed, rotationSpeed, textureUrl, axialTilt = 0) {
+            const geometry = new THREE.SphereGeometry(radius, 32, 32);
+            let material;
+
+            if (textureUrl) {
+                const textureLoader = new THREE.TextureLoader();
+                const texture = textureLoader.load(textureUrl,
+                    undefined, // Callback di successo (non necessaria per questo caso semplice)
+                    undefined, // Callback di progresso
+                    function (err) {
+                        console.error('Si è verificato un errore durante il caricamento della texture:', err);
+                        // Fallback al colore solido se la texture non riesce a caricarsi
+                        material = new THREE.MeshStandardMaterial({ color: color });
+                    }
+                );
+                material = new THREE.MeshStandardMaterial({ map: texture });
+            } else {
+                material = new THREE.MeshStandardMaterial({ color: color });
+            }
+
+            const planet = new THREE.Mesh(geometry, material);
+            planet.name = planetName; // Assegna il nome al mesh del pianeta
+            planet.rotation.x = axialTilt; // Applica l'inclinazione assiale al mesh del pianeta
+            scene.add(planet);
+
+            planets.push({
+                mesh: planet,
+                name: planetName, // Memorizza il nome nell'array dei pianeti
+                distance: distance,
+                orbitalSpeed: orbitalSpeed,
+                rotationSpeed: rotationSpeed,
+                angle: Math.random() * Math.PI * 2 // Angolo iniziale casuale
+            });
+
+            // Crea un anello per l'orbita del pianeta
+            const orbitGeometry = new THREE.RingGeometry(distance - 0.1, distance + 0.1, 128);
+            const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0x555555, side: THREE.DoubleSide });
+            const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+            orbit.rotation.x = Math.PI / 2; // Ruota l'anello per essere orizzontale
+            scene.add(orbit);
+
+            return planet; // Restituisce il mesh del pianeta per aggiungere anelli (es. Saturno)
+        }
+
+        // Crea i pianeti con proprietà (scalate) e texture realistiche (placeholder con colori)
+        // Ho utilizzato placehold.co con colori appropriati per simulare le texture.
+        // Per texture realistiche complete, sarebbe necessario ospitare le immagini o utilizzare una fonte affidabile.
+        const mercury = createPlanet('Mercurio', 1.5, 0xff0000, 20, 0.005, 0.01, 'https://placehold.co/256x256/888888/ffffff.png', 0.01);
+        const venus = createPlanet('Venere', 2.0, 0xffa500, 30, 0.004, 0.008, 'https://placehold.co/256x256/ffcc99/ffffff.png', 3.0); // Alta inclinazione, retrograda
+        const earth = createPlanet('Terra', 2.2, 0x0000ff, 40, 0.003, 0.007, 'https://placehold.co/256x256/0099ff/ffffff.png', 0.41);
+        const mars = createPlanet('Marte', 1.8, 0x8b4513, 50, 0.0025, 0.006, 'https://placehold.co/256x256/cc5500/ffffff.png', 0.43);
+        const jupiter = createPlanet('Giove', 4.0, 0xffd700, 70, 0.0015, 0.005, 'https://placehold.co/256x256/ffaa00/ffffff.png', 0.05);
+        const saturn = createPlanet('Saturno', 3.5, 0xdda0dd, 90, 0.001, 0.004, 'https://placehold.co/256x256/ddccaa/ffffff.png', 0.47);
+        const uranus = createPlanet('Urano', 3.0, 0xadd8e6, 110, 0.0008, 0.003, 'https://placehold.co/256x256/aaddff/ffffff.png', 1.7); // Inclinazione estrema
+        const neptune = createPlanet('Nettuno', 2.8, 0x4169e1, 130, 0.0006, 0.002, 'https://placehold.co/256x256/4466cc/ffffff.png', 0.49);
+
+        // Aggiungi gli anelli di Saturno
+        const ringGeometry = new THREE.RingGeometry(4.5, 7, 64); // Raggio interno ed esterno, segmenti
+        const ringTextureLoader = new THREE.TextureLoader();
+        const ringTexture = ringTextureLoader.load('https://placehold.co/256x256/998877/ffffff.png',
+            undefined,
+            undefined,
+            function (err) {
+                console.error('Si è verificato un errore durante il caricamento della texture degli anelli:', err);
+            }
+        );
+        const ringMaterial = new THREE.MeshStandardMaterial({
+            map: ringTexture,
+            side: THREE.DoubleSide, // Renderizza entrambi i lati dell'anello
+            transparent: true,
+            opacity: 0.7 // Rende gli anelli leggermente trasparenti
+        });
+        const rings = new THREE.Mesh(ringGeometry, ringMaterial);
+        rings.rotation.x = Math.PI / 2; // Ruota per essere orizzontale
+        saturn.add(rings); // Aggiungi gli anelli come figlio di Saturno, così si muovono con esso
+
+        // Aggiungi uno sfondo stellato
+        const starGeometry = new THREE.SphereGeometry(400, 32, 32); // Sfera grande
+        const starTextureLoader = new THREE.TextureLoader();
+        const starTexture = starTextureLoader.load('../img/stars.jpg',
+            undefined,
+            undefined,
+            function (err) {
+                console.error('Si è verificato un errore durante il caricamento della texture stellata:', err);
+            }
+        );
+        const starMaterial = new THREE.MeshBasicMaterial({
+            map: starTexture,
+            side: THREE.BackSide // Renderizza all'interno della sfera
+        });
+        const stars = new THREE.Mesh(starGeometry, starMaterial);
+        scene.add(stars);
+
+        // Gestisce il ridimensionamento della finestra
+        window.addEventListener('resize', onWindowResize, false);
+
+        // Setup della GUI per il controllo della velocità
+        const speedSlider = document.getElementById('speed-slider');
+        const currentSpeedSpan = document.getElementById('current-speed');
+
+        speedSlider.oninput = function() {
+            simulationSpeed = parseFloat(this.value);
+            currentSpeedSpan.textContent = simulationSpeed.toFixed(1) + 'x';
+        };
+
+        // Inizializza gli elementi della casella dei fatti e aggiungi il listener per la chiusura
+        planetFactBox = document.getElementById('planet-fact-box');
+        factTitle = document.getElementById('fact-title');
+        factContent = document.getElementById('fact-content');
+        closeFactBox = document.getElementById('close-fact-box');
+
+        closeFactBox.addEventListener('click', () => {
+            planetFactBox.classList.add('hidden');
+        });
+
+        // Aggiungi il listener per i click sul canvas per rilevare i pianeti
+        renderer.domElement.addEventListener('click', onDocumentMouseDown, false);
+    }
+
+    // Funzione per gestire i click sulla scena 3D
+    function onDocumentMouseDown(event) {
+        // Calcola la posizione del mouse in coordinate normalizzate del dispositivo (-1 a +1)
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+        // Aggiorna il raggio di selezione con la telecamera e la posizione del mouse
+        raycaster.setFromCamera(mouse, camera);
+
+        // Calcola gli oggetti che intersecano il raggio di selezione
+        const intersects = raycaster.intersectObjects(planets.map(p => p.mesh));
+
+        if (intersects.length > 0) {
+            const clickedPlanet = intersects[0].object;
+            getPlanetInfo(clickedPlanet.name);
+        }
+    }
+
+    // Funzione per recuperare informazioni sui pianeti dall'API Gemini
+    async function getPlanetInfo(planetName) {
+        planetFactBox.classList.remove('hidden');
+        factTitle.textContent = `Informazioni su ${planetName} ✨`;
+        factContent.textContent = 'Caricamento...';
+
+        let prompt = `Fornisci un fatto breve e interessante su ${planetName} nel contesto del sistema solare. La risposta deve essere concisa e in italiano.`;
+
+        let chatHistory = [];
+        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        const payload = { contents: chatHistory };
+        const apiKey = ""; // La chiave API sarà fornita dall'ambiente Canvas
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            if (result.candidates && result.candidates.length > 0 &&
+                result.candidates[0].content && result.candidates[0].content.parts &&
+                result.candidates[0].content.parts.length > 0) {
+                const text = result.candidates[0].content.parts[0].text;
+                factContent.textContent = text;
+            } else {
+                factContent.textContent = 'Impossibile recuperare le informazioni. Riprova.';
+                console.error('Struttura della risposta Gemini API inattesa:', result);
+            }
+        } catch (error) {
+            factContent.textContent = 'Errore di rete o API. Riprova.';
+            console.error('Errore durante la chiamata all\'API Gemini:', error);
+        }
+    }
+
+    // Funzione per gestire il ridimensionamento della finestra
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight; // Aggiorna l'aspect ratio della telecamera
+        camera.updateProjectionMatrix(); // Aggiorna la matrice di proiezione della telecamera
+        renderer.setSize(window.innerWidth, window.innerHeight); // Aggiorna la dimensione del renderer
+    }
+
+    // Funzione di animazione principale
+    function animate() {
+        requestAnimationFrame(animate); // Richiede il prossimo frame di animazione
+
+        controls.update(); // Aggiorna i controlli (per lo smorzamento e il movimento)
+
+        // Aggiorna la posizione e la rotazione di ogni pianeta
+        planets.forEach(planet => {
+            // Aggiorna l'angolo orbitale in base alla velocità orbitale originale e alla velocità di simulazione
+            planet.angle += planet.orbitalSpeed * simulationSpeed;
+            // Calcola la nuova posizione del pianeta in base alla sua distanza e all'angolo
+            planet.mesh.position.x = Math.cos(planet.angle) * planet.distance;
+            planet.mesh.position.z = Math.sin(planet.angle) * planet.distance;
+            // Ruota il pianeta sul proprio asse in base alla velocità di rotazione originale e alla velocità di simulazione
+            planet.mesh.rotation.y += planet.rotationSpeed * simulationSpeed;
+        });
+
+        renderer.render(scene, camera); // Renderizza la scena con la telecamera
+    }
+
+    // Avvia l'inizializzazione e l'animazione quando la finestra è completamente caricata
+    window.onload = function () {
+        init(); // Inizializza la scena
+        animate(); // Avvia il loop di animazione
+    };
+</script>
+</body>
+</html>
