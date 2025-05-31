@@ -11,61 +11,105 @@
 </head>
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <video autoplay muted loop id="bg-video">
+      <source src="/img/wallpaper.mp4" type="video/mp4">
+      Il tuo browser non supporta il tag video.
+    </video>
+
+    <nav class="navbar navbar-dark navbar-expand-lg navbar-stile fixed-top p-3 m-2">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Tegra's Website: Pre-Season</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="index.html">Tegra's Official Website</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link m-2" href="index.html" style="color: black; border: 1px solid black; border-radius: 15px;">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link m-2" href="Downloads.html" style="color: black; border: 1px solid black; border-radius: 15px;">Downloads</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link m-2" href="shitpost.html" style="color: black; border: 1px solid black; border-radius: 15px;">Shitposting</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link m-2" href="saggezza.html" style="color: black; border: 1px solid black; border-radius: 15px;">Perle di Saggezza</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link m-2" href="battlepass.html" style="color: black; border: 1px solid black; border-radius: 15px;">Pass Battaglia</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link m-2" href="itemshop.html" style="color: black; border: 1px solid black; border-radius: 15px;">Negozio Oggetti</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link m-2" href="changelog.html" style="color: red; border: 3px solid blue; border-radius: 15px;">CHANGELOG <span class="badge text-bg-danger">NUOVO</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link m-2" href="aurapoints.html" style="color: orange; border: 2px solid orange; border-radius: 15px;">Programma AuraPoints</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link m-2" href="solar_system.html" style="color: blue; border: 2px solid blue; border-radius: 15px;">Sistema Solare</a></a>
-            </li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link active" href="battlepass.html">Pass Battaglia</a></li>
+            <li class="nav-item"><a class="nav-link active" href="itemshop.html">Negozio Oggetti</a></li>
+            <li class="nav-item"><a class="nav-link active" href="saggezza.html">Perle di saggezza</a></li>
+            <li class="nav-item"><a class="nav-link active" href="Downloads.html">Downloads</a></li>
+            <li class="nav-item"><a class="nav-link active" href="changelog.html">Changelog</a></li>
+            <li class="nav-item"><a class="nav-link active" href="aurapoints.html">Programma Aura Points</a></li>
           </ul>
         </div>
       </div>
     </nav>
+
+    <div style="height: 70px;"></div>
   </header>
-  <main>
+  <main class="page-content">
     <div class="container">
-      <h1> Ragazzi ho dovuto fare delle modifiche al mio Professional WebSite 🥀</h1>
-      <p> Il sito STA tornando (molto lentamente). </p>
-      <p class="m-1 p-1"> Ho aperto un canale dove posto rom per Garnet, entra qui: </p>
-      <a href="https://t.me/garnet_roms" class="btn btn-primary m-1 p-1">Skibidi Sigma</a>
-      <p class="m-1 p-1">Pagina dei Changelog</p>
-      <a href="changelog.html" class="btn btn-primary m-1 p-1">Changelogs</a>
-      <br>
+      <div class="row">
+        <div class="col-12 divs-main mb-3">
+          <h1 class="text-center main-font"> Home </h1>
+          <p class="text-center" style="color: white; font-family: 'Arial Narrow';"> < /index.html ></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8">
+          <h2 class="main-font divs-main">Notizie Principali</h2>
+          <div class="divs-main">
+            <br>
+            <p class="main-font"> 31/05/2025</p>
+            <br>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+              <div class="col">
+                <h3 class="main-font"> Modifiche al mio professional Website </h3>
+                <p class="main-font"> Dopo aver fatto un lungo studio di come si progetta un sito web il sito ha larghe possibilità di tornare presto </p>
+              </div>
+              <div class="col">
+                <h3 class="main-font"> Visita la pagina dei changelog </h3>
+                <p class="main-font"> Nonostante ci siano i commit su github, io non avendo nulla da fare ho una pagina dedicata pure qua</p>
+                <a href="changelog.html" class="btn btn-success"> Changelogs </a>
+              </div>
+            </div>
+            <br>
+            <p class="main-font"> 30/05/2025</p>
+            <br>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+              <div class="col">
+                <h3 class="main-font"> Entra nel mio gruppo tg </h3>
+                <p class="main-font"> Il mio gruppo tg ti conferisce vantaggi inimmaginabili </p>
+                <a href="https://t.me/Reportare" class="btn btn-primary"> Gruppo Telegram </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="divs-main">
+          <h3 class="main-font"> Visita il mio profilo github </h3>
+            <a href="https://github.com/RealTegra" class="btn btn-warning"> Github </a>
+          </div>
+          <div class="divs-main">
+            <h2 class="text-center main-font"> Qua non so cosa mettere ancora </h2>
+            <p class="text-center main-font"> <=3 </p>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
-  <footer>
-
+  <footer id="footer">
+    <div class="container footer-bianco">
+      <div class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <p class="col-md-4 mb-0">© Fatto con amore da Tegra </p>
+        <a href="/"
+           class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto text-decoration-none"
+           aria-label="Bootstrap">
+          <svg class="bi me-2" width="40" height="32" aria-hidden="true">
+            <use xlink:href="#bootstrap"></use>
+          </svg>
+        </a>
+        <ul class="nav col-md-4 justify-content-end">
+          <li class="nav-item"><a href="index.html" class="nav-link px-2">Home</a></li>
+          <li class="nav-item"><a href="changelog.html" class="nav-link px-2">Changelogs</a></li>
+        </ul>
+      </div>
+    </div>
   </footer>
 </body>
 </html>
